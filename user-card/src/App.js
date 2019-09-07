@@ -12,18 +12,21 @@ class App extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount() {    
+    this.usersGet()
+    this.usersFollowers()
+  }
+
+  usersGet = () => {
     axios.get('https://api.github.com/users/gmgower')
     // .then(res => res.json())
     .then(res => {
-      console.log(res.data)
+      console.log(res)
       this.setState({user: res.data})
     })
     .catch(error => {
       console.log(error)
     })
-
-    this.usersFollowers()
   }
 
   usersFollowers = () => {

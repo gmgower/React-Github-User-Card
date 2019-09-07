@@ -1,21 +1,22 @@
 import React from 'react';
 import './App.css';
-
+import UserCard from './components/UserCard.jsx'
 import axios from 'axios'
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      users: []
+      user: {}
     };
   }
 
   componentDidMount() {
-    fetch('https://api.github.com/users/gmgower')
+    axios.get('https://api.github.com/users/gmgower')
     // .then(res => res.json())
     .then(res => {
-      console.log(res)
+      console.log(res.data)
+      this.setState({user: res.data})
     })
     .catch(error => {
       console.log(error)
@@ -25,7 +26,7 @@ class App extends React.Component {
   render() {
     return (
       <div className='App'>
-        <h1>Hello</h1>
+        <UserCard user={this.state.user}/>       
       </div>
     );
   }

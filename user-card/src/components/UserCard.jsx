@@ -1,7 +1,7 @@
 import React from 'react';
 import UserList from './UserList';
 
-import { Card, Icon, Image } from 'semantic-ui-react';
+import { Card, Image } from 'semantic-ui-react';
 
 const UserCard = props => {
   console.log('UserCard Props', props);

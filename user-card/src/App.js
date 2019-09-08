@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import UserCard from './components/UserCard.jsx';
+import UserSearch from './components/UserSearch.jsx'
 
 import axios from 'axios';
 
@@ -8,9 +9,14 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
+      userName: 'gmgower',
       user: {},
       followers: []
     };
+  }
+
+  changeUserName = (userName) => {
+    this.setState({ userName })
   }
 
   componentDidMount() {
@@ -18,9 +24,21 @@ class App extends React.Component {
     this.usersFollowers();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    console.log("CDU", this.state)
+    if(prevState.userName !== this.state.userName) {
+      console.log(prevState.userName)
+      this.usersGet();
+      this.usersFollowers();
+    
+    }
+  }
+
   usersGet = () => {
     axios
-      .get('https://api.github.com/users/gmgower')
+      .get(`https://api.github.com/users/${this.state.userName}`)
+      // .get(`https://api.github.com/users/gmgower`)
+
       // .then(res => res.json())
       .then(res => {
         console.log(res);
@@ -32,8 +50,10 @@ class App extends React.Component {
   };
 
   usersFollowers = () => {
-    axios.get('https://api.github.com/users/gmgower/followers').then(res => {
-      console.log(res.data);
+    axios.get(`https://api.github.com/users/${this.state.userName}/followers`).then(res => {
+      // .get(`https://api.github.com/users/gmgower/followers`)
+      
+    console.log(res.data);
       this.setState({ followers: res.data });
     });
   };
@@ -41,6 +61,7 @@ class App extends React.Component {
   render() {
     return (
       <div className='App'>
+        <UserSearch changeUserName={this.changeUserName} />
         <UserCard user={this.state.user} followers={this.state.followers} />
       </div>
     );
